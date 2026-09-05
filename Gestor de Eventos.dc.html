@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/joander-santos-design-system-3df804a4-1997-4e4c-ae8a-c61bca172763/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/joander-santos-design-system-3df804a4-1997-4e4c-ae8a-c61bca172763/tokens/colors.css">
+<link rel="stylesheet" href="_ds/joander-santos-design-system-3df804a4-1997-4e4c-ae8a-c61bca172763/tokens/typography.css">
+<link rel="stylesheet" href="_ds/joander-santos-design-system-3df804a4-1997-4e4c-ae8a-c61bca172763/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/joander-santos-design-system-3df804a4-1997-4e4c-ae8a-c61bca172763/styles.css">
+<script src="_ds/joander-santos-design-system-3df804a4-1997-4e4c-ae8a-c61bca172763/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: #e2e0da; font-family: "IBM Plex Sans", sans-serif; display: flex; justify-content: center; align-items: flex-start; padding: 24px 0; }
+  a { color: var(--accent-600); text-decoration: none; }
+  a:hover { color: var(--accent-700); }
+  input, select, textarea, button { font-family: inherit; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent-500); outline-offset: 1px; }
+  *::-webkit-scrollbar { width: 0; height: 0; }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+
+<div style="--accent-500: {{ accent }}; width: 390px; height: 844px; background: var(--gray-25); border-radius: 40px; box-shadow: 0 32px 80px rgba(14,13,12,0.24); overflow: hidden; display: flex; flex-direction: column; position: relative; color: var(--text-primary); touch-action: manipulation;">
+
+  <div style="height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.02em; color: var(--gray-600);">
+    <span>9:41</span>
+    <span style="display: flex; gap: 5px; align-items: center;">
+      <span style="width: 6px; height: 6px; border-radius: 999px; background: var(--gray-400);"></span>
+      <span style="width: 6px; height: 6px; border-radius: 999px; background: var(--gray-400);"></span>
+      <span style="width: 18px; height: 9px; border: 1px solid var(--gray-400); border-radius: 3px;"></span>
+    </span>
+  </div>
+
+  <div style="flex: none; padding: 2px 20px 12px;">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;">
+      <div>
+        <div style="font-family: Newsreader, serif; font-style: italic; font-size: 15px; color: var(--accent-600); line-height: 1;">{{ eyebrow }}</div>
+        <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 27px; letter-spacing: -0.02em; line-height: 1.15; margin-top: 4px; text-transform: capitalize;">{{ headline }}</div>
+      </div>
+      <div style="display: flex; gap: 6px; flex: none; padding-bottom: 4px;">
+        <button onClick="{{ onPrev }}" style="width: 34px; height: 34px; border-radius: 999px; border: 1px solid var(--border-default); background: var(--gray-0); display: grid; place-items: center; cursor: pointer; color: var(--gray-700);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button onClick="{{ onNext }}" style="width: 34px; height: 34px; border-radius: 999px; border: 1px solid var(--border-default); background: var(--gray-0); display: grid; place-items: center; cursor: pointer; color: var(--gray-700);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ tabAgenda }}" hint-placeholder-val="{{ true }}">
+    <div style="flex: none; padding: 0 20px 10px; display: flex; gap: 6px;">
+      <sc-for list="{{ modes }}" as="mo" hint-placeholder-count="4">
+        <button onClick="{{ mo.onPick }}" style="flex: 1; padding: 8px 0; border-radius: 999px; border: 1px solid {{ mo.bd }}; background: {{ mo.bg }}; color: {{ mo.fg }}; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: background 160ms;">{{ mo.label }}</button>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <div style="flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 0 20px 120px;">
+
+    <sc-if value="{{ showMonth }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 6px;">
+          <sc-for list="{{ weekdays }}" as="wd" hint-placeholder-count="7">
+            <div style="text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400);">{{ wd.l }}</div>
+          </sc-for>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;">
+          <sc-for list="{{ days }}" as="day" hint-placeholder-count="35">
+            <div data-day="{{ day.iso }}" onClick="{{ day.onTap }}" style="height: 54px; border-radius: 12px; padding: 4px 3px 3px; background: {{ day.bg }}; border: 1px solid {{ day.bd }}; opacity: {{ day.op }}; cursor: pointer; display: flex; flex-direction: column; gap: 2px; overflow: hidden;">
+              <div style="font-size: 11.5px; font-weight: 600; text-align: center; color: {{ day.numColor }}; line-height: 1.1;">{{ day.num }}</div>
+              <sc-for list="{{ day.chips }}" as="ch" hint-placeholder-count="1">
+                <div onPointerDown="{{ ch.onDown }}" style="height: 14px; border-radius: 3px; background: {{ ch.color }}; opacity: {{ ch.op }}; display: flex; align-items: center; padding: 0 3px; font-size: 8px; font-weight: 600; color: #fff; letter-spacing: 0.01em; overflow: hidden; white-space: nowrap;">{{ ch.short }}</div>
+              </sc-for>
+              <sc-if value="{{ day.more }}">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: var(--gray-400); text-align: center;">{{ day.moreLabel }}</div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap;">
+          <sc-for list="{{ legend }}" as="lg" hint-placeholder-count="6">
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <span style="width: 8px; height: 8px; border-radius: 999px; background: {{ lg.c }};"></span>
+              <span style="font-size: 10.5px; color: var(--gray-500);">{{ lg.k }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showYear }}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+        <sc-for list="{{ months }}" as="mm" hint-placeholder-count="12">
+          <div onClick="{{ mm.onOpen }}" style="background: var(--gray-0); border: 1px solid {{ mm.bd }}; border-radius: 14px; padding: 8px 7px 9px; cursor: pointer; box-shadow: var(--shadow-xs);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
+              <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px;">{{ mm.label }}</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: {{ mm.countColor }};">{{ mm.count }}</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.5px;">
+              <sc-for list="{{ mm.cells }}" as="c" hint-placeholder-count="35">
+                <div style="height: 9px; border-radius: 2px; background: {{ c.bg }};"></div>
+              </sc-for>
+            </div>
+            <div style="margin-top: 6px; height: 3px; border-radius: 999px; background: var(--gray-100); overflow: hidden;">
+              <div style="height: 3px; width: {{ mm.load }}; background: var(--accent-500);"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top: 14px; font-size: 11.5px; color: var(--gray-500); line-height: 1.5;">Toque em um mês para abrir a agenda. A barra mostra a ocupação de dias com evento.</div>
+    </sc-if>
+
+    <sc-if value="{{ showCards }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 16px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; min-height: 16px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gray-500); line-height: 1.5;">{{ cardsTitle }}</div>
+          <button onClick="{{ onNew }}" style="border: none; background: none; padding: 0; font-size: 12px; font-weight: 600; color: var(--accent-600); cursor: pointer;">+ Novo</button>
+        </div>
+
+        <sc-if value="{{ cardsEmpty }}">
+          <div style="border: 1px dashed var(--gray-200); border-radius: 20px; padding: 22px 18px; text-align: center;">
+            <div style="font-size: 13px; color: var(--gray-500); line-height: 1.5;">Nenhum evento aqui.<br>Toque em <strong style="color: var(--accent-600);">+ Novo</strong> ou em um dia do calendário.</div>
+          </div>
+        </sc-if>
+
+        <sc-for list="{{ cards }}" as="ev" hint-placeholder-count="2">
+          <div style="background: var(--gray-0); border: 1px solid {{ ev.bd }}; border-radius: 20px; box-shadow: var(--shadow-sm); overflow: hidden; animation: riseIn 240ms cubic-bezier(0.16,1,0.3,1) both;">
+            <div style="height: 3px; background: {{ ev.color }};"></div>
+
+            <sc-if value="{{ ev.reading }}" hint-placeholder-val="{{ true }}">
+              <div onClick="{{ ev.onEdit }}" style="padding: 13px 15px 14px; cursor: text;">
+                <div style="display: flex; justify-content: space-between; gap: 10px; align-items: flex-start;">
+                  <div style="min-width: 0;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: {{ ev.color }};">{{ ev.tipo }}</div>
+                    <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16.5px; letter-spacing: -0.01em; line-height: 1.25; margin-top: 3px; text-wrap: pretty;">{{ ev.nome }}</div>
+                    <div style="font-size: 12px; color: var(--gray-500); margin-top: 4px;">{{ ev.metaLine }}</div>
+                  </div>
+                  <div style="display: flex; gap: 4px; flex: none;">
+                    <button onClick="{{ ev.onEdit }}" style="width: 30px; height: 30px; border-radius: 999px; border: 1px solid var(--border-default); background: var(--gray-0); display: grid; place-items: center; cursor: pointer; color: var(--gray-600);">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                    </button>
+                    <button onClick="{{ ev.onDelete }}" style="width: 30px; height: 30px; border-radius: 999px; border: 1px solid var(--border-default); background: var(--gray-0); display: grid; place-items: center; cursor: pointer; color: var(--gray-500);">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+                    </button>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 11px;">
+                  <span style="padding: 3px 9px; border-radius: 999px; background: {{ ev.statusBg }}; color: {{ ev.statusFg }}; font-size: 10.5px; font-weight: 600; white-space: nowrap;">{{ ev.status }}</span>
+                  <span style="padding: 3px 9px; border-radius: 999px; background: var(--gray-50); color: var(--gray-600); font-size: 10.5px; white-space: nowrap;">{{ ev.convidados }} convidados</span>
+                  <sc-if value="{{ showMoney }}">
+                    <span style="padding: 3px 9px; border-radius: 999px; background: var(--gray-50); color: var(--gray-600); font-size: 10.5px; white-space: nowrap;">{{ ev.orcLabel }}</span>
+                  </sc-if>
+                  <sc-if value="{{ ev.taskPending }}">
+                    <span style="padding: 3px 9px; border-radius: 999px; background: var(--accent-25); color: var(--accent-700); font-size: 10.5px; font-weight: 600; white-space: nowrap;">{{ ev.taskLabel }}</span>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ ev.showBudget }}">
+                  <div style="margin-top: 11px;">
+                    <div style="display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px;">
+                      <span style="color: {{ ev.custoColor }}; font-weight: 600;">{{ ev.custoLabel }} gastos</span>
+                      <span style="color: var(--gray-400);">de {{ ev.orcLabel }}</span>
+                    </div>
+                    <div style="height: 5px; margin-top: 4px; border-radius: 999px; background: var(--gray-50); overflow: hidden;">
+                      <div style="height: 5px; width: {{ ev.gastoPct }}; background: {{ ev.custoColor }}; border-radius: 999px;"></div>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ ev.editing }}">
+              <div style="padding: 12px 15px 15px; background: var(--gray-25);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-500);">Editando</span>
+                  <button onClick="{{ ev.onDone }}" style="padding: 6px 14px; border-radius: 999px; border: none; background: var(--gray-900); color: var(--gray-25); font-size: 11.5px; font-weight: 600; cursor: pointer;">Pronto</button>
+                </div>
+                <input value="{{ ev.nome }}" onChange="{{ ev.chNome }}" placeholder="Nome do evento" style="width: 100%; box-sizing: border-box; border: none; border-bottom: 1.5px solid var(--gray-200); background: none; padding: 4px 0 7px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; color: var(--text-primary);">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 12px;">
+                  <label style="display: flex; flex-direction: column; gap: 3px;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Tipo</span>
+                    <select value="{{ ev.tipo }}" onChange="{{ ev.chTipo }}" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                      <sc-for list="{{ typeOptions }}" as="t" hint-placeholder-count="6">
+                        <option value="{{ t.k }}">{{ t.k }}</option>
+                      </sc-for>
+                    </select>
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 3px;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Status</span>
+                    <select value="{{ ev.status }}" onChange="{{ ev.chStatus }}" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                      <sc-for list="{{ statusOptions }}" as="s" hint-placeholder-count="4">
+                        <option value="{{ s.k }}">{{ s.k }}</option>
+                      </sc-for>
+                    </select>
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 3px;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Data</span>
+                    <input type="date" value="{{ ev.data }}" onChange="{{ ev.chData }}" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 3px;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Horário</span>
+                    <input type="time" value="{{ ev.hora }}" onChange="{{ ev.chHora }}" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 3px; grid-column: span 2;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Local</span>
+                    <input value="{{ ev.local }}" onChange="{{ ev.chLocal }}" placeholder="Onde acontece" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 3px; grid-column: span 2;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Cliente</span>
+                    <input value="{{ ev.cliente }}" onChange="{{ ev.chCliente }}" placeholder="Quem contratou" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 3px;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Convidados</span>
+                    <input type="number" value="{{ ev.convidados }}" onChange="{{ ev.chConv }}" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 3px;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Equipe</span>
+                    <input value="{{ ev.equipe }}" onChange="{{ ev.chEquipe }}" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                  </label>
+                  <sc-if value="{{ showMoney }}" hint-placeholder-val="{{ true }}">
+                    <label style="display: flex; flex-direction: column; gap: 3px;">
+                      <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Orçamento</span>
+                      <input type="number" value="{{ ev.orcamento }}" onChange="{{ ev.chOrc }}" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                    </label>
+                  </sc-if>
+                  <sc-if value="{{ showMoney }}" hint-placeholder-val="{{ true }}">
+                    <label style="display: flex; flex-direction: column; gap: 3px;">
+                      <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Gasto total</span>
+                      <div style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-50); padding: 7px 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 600; color: {{ ev.custoColor }};">{{ ev.custoLabel }}</div>
+                    </label>
+                  </sc-if>
+                  <label style="display: flex; flex-direction: column; gap: 3px; grid-column: span 2;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Fornecedores</span>
+                    <input value="{{ ev.fornecedores }}" onChange="{{ ev.chForn }}" placeholder="Separados por vírgula" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 3px; grid-column: span 2;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Anexos / links</span>
+                    <input value="{{ ev.links }}" onChange="{{ ev.chLinks }}" placeholder="Contrato, proposta, pasta..." style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 3px; grid-column: span 2;">
+                    <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Notas</span>
+                    <textarea value="{{ ev.notas }}" onChange="{{ ev.chNotas }}" rows="2" placeholder="Observações" style="border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; resize: none; color: var(--text-primary);"></textarea>
+                  </label>
+                </div>
+
+                <sc-if value="{{ showMoney }}" hint-placeholder-val="{{ true }}">
+                  <div style="margin-top: 16px; padding: 12px; border-radius: 14px; background: var(--gray-0); border: 1px solid var(--border-default);">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 8px;">
+                      <span style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Gastos do evento</span>
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; color: {{ ev.custoColor }}; white-space: nowrap;">{{ ev.gastoRatio }}</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                      <sc-for list="{{ ev.gastos }}" as="g" hint-placeholder-count="3">
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                          <select value="{{ g.cat }}" onChange="{{ g.onCat }}" style="flex: 1; min-width: 0; border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                            <sc-for list="{{ gastoCats }}" as="gc" hint-placeholder-count="7">
+                              <option value="{{ gc.k }}">{{ gc.k }}</option>
+                            </sc-for>
+                          </select>
+                          <input type="number" value="{{ g.v }}" onChange="{{ g.onVal }}" style="width: 88px; flex: none; text-align: right; font-family: 'IBM Plex Mono', monospace; border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                          <button onClick="{{ g.onRemove }}" style="border: none; background: none; color: var(--gray-400); font-size: 16px; line-height: 1; cursor: pointer; padding: 0 2px;">×</button>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <button onClick="{{ ev.onAddGasto }}" style="margin-top: 8px; border: 1px dashed var(--gray-200); background: none; border-radius: 999px; padding: 6px 13px; font-size: 11.5px; color: var(--gray-600); cursor: pointer;">+ Adicionar gasto</button>
+                    <div style="margin-top: 11px; height: 8px; border-radius: 999px; background: var(--gray-50); overflow: hidden; display: flex; gap: 1px;">
+                      <sc-for list="{{ ev.gastoBars }}" as="gb" hint-placeholder-count="3">
+                        <div style="width: {{ gb.w }}; background: {{ gb.c }};"></div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <div style="margin-top: 14px;">
+                  <div style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace; margin-bottom: 6px;">Checklist</div>
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <sc-for list="{{ ev.checklist }}" as="tk" hint-placeholder-count="3">
+                      <div style="display: flex; align-items: center; gap: 9px;">
+                        <button onClick="{{ tk.onToggle }}" style="width: 19px; height: 19px; flex: none; border-radius: 6px; border: 1.5px solid {{ tk.bd }}; background: {{ tk.bg }}; display: grid; place-items: center; cursor: pointer; color: #fff; padding: 0;">
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity: {{ tk.tickOp }};"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                        <input value="{{ tk.t }}" onChange="{{ tk.onText }}" style="flex: 1; border: none; background: none; padding: 2px 0; font-size: 12.5px; color: {{ tk.fg }}; text-decoration: {{ tk.deco }};">
+                        <button onClick="{{ tk.onRemove }}" style="border: none; background: none; color: var(--gray-400); font-size: 15px; line-height: 1; cursor: pointer; padding: 0 2px;">×</button>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <button onClick="{{ ev.onAddTask }}" style="margin-top: 8px; border: 1px dashed var(--gray-200); background: none; border-radius: 999px; padding: 6px 13px; font-size: 11.5px; color: var(--gray-600); cursor: pointer;">+ Adicionar tarefa</button>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--gray-100);">
+                  <button onClick="{{ ev.onDelete }}" style="border: none; background: none; padding: 0; color: var(--danger-500); font-size: 12px; font-weight: 600; cursor: pointer;">Excluir evento</button>
+                  <button onClick="{{ ev.onDuplicate }}" style="border: none; background: none; padding: 0; color: var(--gray-500); font-size: 12px; cursor: pointer;">Duplicar</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ tabDash }}">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; gap: 6px;">
+          <sc-for list="{{ periods }}" as="p" hint-placeholder-count="2">
+            <button onClick="{{ p.onPick }}" style="flex: 1; padding: 9px 0; border-radius: 999px; border: 1px solid {{ p.bd }}; background: {{ p.bg }}; color: {{ p.fg }}; font-size: 12.5px; font-weight: 600; cursor: pointer;">{{ p.label }}</button>
+          </sc-for>
+        </div>
+
+        <div style="background: var(--gray-0); border: 1px solid var(--border-default); border-radius: 18px; padding: 12px; box-shadow: var(--shadow-xs); display: grid; grid-template-columns: 1fr 1fr; gap: 9px;">
+          <sc-for list="{{ cmpPickers }}" as="p" hint-placeholder-count="2">
+            <label style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+              <span style="display: flex; align-items: center; gap: 5px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">
+                <span style="width: 7px; height: 7px; border-radius: 999px; background: {{ p.dot }}; flex: none;"></span>{{ p.label }}
+              </span>
+              <select value="{{ p.value }}" onChange="{{ p.onChange }}" style="width: 100%; box-sizing: border-box; border: 1px solid var(--border-default); border-radius: 8px; background: var(--gray-0); padding: 7px 8px; font-size: 12.5px; color: var(--text-primary);">
+                <sc-for list="{{ p.options }}" as="o" hint-placeholder-count="12">
+                  <option value="{{ o.v }}">{{ o.l }}</option>
+                </sc-for>
+              </select>
+            </label>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 9px;">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background: {{ k.bg }}; border: 1px solid {{ k.bd }}; border-radius: 18px; padding: 13px 14px 14px; box-shadow: var(--shadow-xs);">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: {{ k.labelColor }};">{{ k.label }}</div>
+              <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.02em; margin-top: 6px; color: {{ k.fg }};">{{ k.value }}</div>
+              <div style="display: flex; align-items: center; gap: 5px; margin-top: 5px;">
+                <span style="font-size: 11px; font-weight: 600; color: {{ k.deltaColor }};">{{ k.delta }}</span>
+                <span style="font-size: 10.5px; color: {{ k.subColor }};">{{ k.sub }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background: var(--gray-0); border: 1px solid var(--border-default); border-radius: 22px; padding: 15px 15px 17px; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px;">{{ chartTitle }}</div>
+            <div style="display: flex; gap: 9px;">
+              <span style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--gray-500);"><span style="width: 8px; height: 8px; border-radius: 2px; background: var(--accent-500);"></span>{{ serieA }}</span>
+              <span style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--gray-500);"><span style="width: 8px; height: 8px; border-radius: 2px; background: var(--gray-200);"></span>{{ serieB }}</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: flex-end; gap: 3px; height: 104px; margin-top: 14px;">
+            <sc-for list="{{ bars }}" as="b" hint-placeholder-count="12">
+              <div onClick="{{ b.onPick }}" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer;">
+                <div style="width: 100%; height: 88px; display: flex; align-items: flex-end; justify-content: center; gap: 1.5px;">
+                  <div style="width: 42%; height: {{ b.hB }}; min-height: 2px; background: var(--gray-200); border-radius: 2px 2px 0 0;"></div>
+                  <div style="width: 42%; height: {{ b.hA }}; min-height: 2px; background: {{ b.colorA }}; border-radius: 2px 2px 0 0;"></div>
+                </div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: {{ b.labelColor }};">{{ b.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background: var(--gray-0); border: 1px solid var(--border-default); border-radius: 22px; padding: 15px; box-shadow: var(--shadow-sm);">
+          <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; margin-bottom: 12px;">{{ cmpTitle }}</div>
+          <div style="display: flex; flex-direction: column; gap: 11px;">
+            <sc-for list="{{ cmpRows }}" as="r" hint-placeholder-count="4">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
+                  <span style="font-size: 12px; color: var(--gray-600);">{{ r.label }}</span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;"><strong style="font-weight: 600;">{{ r.a }}</strong> <span style="color: var(--gray-400);">/ {{ r.b }}</span> <span style="color: {{ r.deltaColor }}; font-weight: 600;">{{ r.delta }}</span></span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div style="height: 6px; border-radius: 999px; background: var(--gray-50); overflow: hidden;"><div style="height: 6px; width: {{ r.pctA }}; background: var(--accent-500); border-radius: 999px;"></div></div>
+                  <div style="height: 6px; border-radius: 999px; background: var(--gray-50); overflow: hidden;"><div style="height: 6px; width: {{ r.pctB }}; background: var(--gray-200); border-radius: 999px;"></div></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background: var(--gray-0); border: 1px solid var(--border-default); border-radius: 22px; padding: 15px; box-shadow: var(--shadow-sm);">
+          <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; margin-bottom: 12px;">Mix de tipos</div>
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <sc-for list="{{ mix }}" as="m" hint-placeholder-count="5">
+              <div style="display: flex; align-items: center; gap: 9px;">
+                <span style="width: 74px; flex: none; font-size: 11.5px; color: var(--gray-600);">{{ m.k }}</span>
+                <div style="flex: 1; height: 9px; border-radius: 999px; background: var(--gray-50); overflow: hidden;">
+                  <div style="height: 9px; width: {{ m.w }}; background: {{ m.c }}; border-radius: 999px;"></div>
+                </div>
+                <span style="width: 22px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--gray-500);">{{ m.n }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ showMoney }}">
+          <div style="background: var(--gray-0); border: 1px solid var(--border-default); border-radius: 22px; padding: 15px; box-shadow: var(--shadow-sm);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 12px;">
+              <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px;">Onde o dinheiro foi</div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--gray-400);">{{ cmpTitle }}</span>
+            </div>
+            <sc-if value="{{ catsEmpty }}">
+              <div style="font-size: 12px; color: var(--gray-500);">Nenhum gasto lançado neste período.</div>
+            </sc-if>
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <sc-for list="{{ cats }}" as="ct" hint-placeholder-count="5">
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; gap: 8px;">
+                    <span style="font-size: 11.5px; color: var(--gray-600);">{{ ct.k }}</span>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; white-space: nowrap;"><strong style="font-weight: 600;">{{ ct.v }}</strong> <span style="color: var(--gray-400);">{{ ct.share }}</span></span>
+                  </div>
+                  <div style="height: 8px; border-radius: 999px; background: var(--gray-50); overflow: hidden;">
+                    <div style="height: 8px; width: {{ ct.w }}; background: {{ ct.c }}; border-radius: 999px;"></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display: flex; gap: 9px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--gray-100);">
+              <div style="flex: 1;">
+                <div style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Custo médio / evento</div>
+                <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; margin-top: 3px;">{{ ticket }}</div>
+              </div>
+              <div style="flex: 1;">
+                <div style="font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); font-family: 'IBM Plex Mono', monospace;">Custo / convidado</div>
+                <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; margin-top: 3px;">{{ perGuest }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="background: var(--gray-900); border-radius: 22px; padding: 16px; color: var(--text-inverse);">
+          <div style="font-family: Newsreader, serif; font-style: italic; font-size: 14px; color: var(--accent-300);">Precisa de atenção</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 11px;">
+            <sc-for list="{{ alerts }}" as="a" hint-placeholder-count="3">
+              <div onClick="{{ a.onOpen }}" style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer;">
+                <span style="width: 7px; height: 7px; border-radius: 999px; background: var(--accent-500); flex: none; margin-top: 5px;"></span>
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; line-height: 1.3;">{{ a.t }}</div>
+                  <div style="font-size: 11.5px; color: var(--text-inverse-secondary); margin-top: 2px;">{{ a.sub }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background: var(--gray-0); border: 1px solid var(--border-default); border-radius: 22px; padding: 15px; box-shadow: var(--shadow-sm);">
+          <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; margin-bottom: 11px;">Próximos eventos</div>
+          <div style="display: flex; flex-direction: column; gap: 11px;">
+            <sc-for list="{{ upcoming }}" as="u" hint-placeholder-count="4">
+              <div onClick="{{ u.onOpen }}" style="display: flex; gap: 11px; align-items: center; cursor: pointer;">
+                <div style="width: 42px; flex: none; text-align: center; border-radius: 10px; background: var(--gray-25); border: 1px solid var(--border-default); padding: 5px 0;">
+                  <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; line-height: 1;">{{ u.d }}</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; text-transform: uppercase; color: var(--gray-500); margin-top: 2px;">{{ u.m }}</div>
+                </div>
+                <div style="min-width: 0; flex: 1;">
+                  <div style="font-size: 13px; font-weight: 600; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ u.nome }}</div>
+                  <div style="font-size: 11.5px; color: var(--gray-500); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ u.sub }}</div>
+                </div>
+                <span style="width: 4px; height: 26px; border-radius: 999px; background: {{ u.color }}; flex: none;"></span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ dragging }}">
+    <div style="position: fixed; left: {{ ghost.x }}; top: {{ ghost.y }}; transform: translate(-50%, -140%); padding: 5px 11px; border-radius: 999px; background: {{ ghost.color }}; color: #fff; font-size: 11px; font-weight: 600; box-shadow: var(--shadow-lg); pointer-events: none; z-index: 60; white-space: nowrap;">{{ ghost.label }}</div>
+  </sc-if>
+
+  <sc-if value="{{ dragging }}">
+    <div style="position: absolute; left: 20px; right: 20px; bottom: 96px; padding: 9px 14px; border-radius: 999px; background: var(--gray-900); color: var(--gray-25); font-size: 11.5px; text-align: center; z-index: 55;">Solte em outro dia para mudar a data</div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}">
+    <div style="position: absolute; left: 20px; right: 20px; bottom: 96px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 12px 11px 16px; border-radius: 999px; background: var(--gray-900); color: var(--gray-25); box-shadow: var(--shadow-lg); z-index: 50; animation: riseIn 200ms ease both;">
+      <span style="font-size: 12.5px;">{{ toastText }}</span>
+      <button onClick="{{ onUndo }}" style="border: none; background: var(--accent-500); color: var(--gray-950); border-radius: 999px; padding: 5px 13px; font-size: 11.5px; font-weight: 700; cursor: pointer;">Desfazer</button>
+    </div>
+  </sc-if>
+
+  <button onClick="{{ onNew }}" style="position: absolute; right: 20px; bottom: 96px; width: 54px; height: 54px; border-radius: 999px; border: none; background: var(--accent-500); color: var(--gray-950); box-shadow: 0 10px 24px rgba(255,90,31,0.36); display: grid; place-items: center; cursor: pointer; z-index: 40;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+  </button>
+
+  <div style="flex: none; height: 82px; border-top: 1px solid var(--border-default); background: rgba(247,246,243,0.94); backdrop-filter: blur(8px); display: grid; grid-template-columns: 1fr 1fr; padding: 0 30px;">
+    <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="2">
+      <button onClick="{{ tb.onPick }}" style="border: none; background: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding-bottom: 16px; cursor: pointer; color: {{ tb.fg }};">
+        <sc-if value="{{ tb.isCal }}" hint-placeholder-val="{{ true }}">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"></rect><path d="M3 9h18M8 3v3M16 3v3"></path></svg>
+        </sc-if>
+        <sc-if value="{{ tb.isDash }}">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+        </sc-if>
+        <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.01em;">{{ tb.label }}</span>
+      </button>
+    </sc-for>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#ff5a1f&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#ff5a1f&quot;,&quot;#2f6f5e&quot;,&quot;#3d5a8a&quot;,&quot;#8c4a6b&quot;],&quot;section&quot;:&quot;Aparência&quot;},&quot;mostrarFinancas&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conteúdo&quot;},&quot;semanaComeca&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Domingo&quot;,&quot;options&quot;:[&quot;Domingo&quot;,&quot;Segunda&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Calendário&quot;}}">
+const TYPES = [
+  { k: 'Corporativo', c: 'var(--accent-500)', short: 'CORP' },
+  { k: 'Casamento', c: '#a9788c', short: 'CASA' },
+  { k: 'Show', c: '#5b6f8c', short: 'SHOW' },
+  { k: 'Feira', c: '#7d8a5b', short: 'FEIR' },
+  { k: 'Interno', c: '#57524c', short: 'INTE' },
+  { k: 'Workshop', c: '#b8380c', short: 'WORK' }
+];
+const STATUS = ['Planejado', 'Confirmado', 'Concluído', 'Cancelado'];
+const CATS = ['Buffet', 'Estrutura', 'Som & Luz', 'Equipe', 'Marketing', 'Deslocamento', 'Outros'];
+const CATC = { 'Buffet': 'var(--accent-500)', 'Estrutura': '#5b6f8c', 'Som & Luz': '#7d8a5b', 'Equipe': '#a9788c', 'Marketing': '#b8380c', 'Deslocamento': '#57524c', 'Outros': 'var(--gray-300)' };
+function cost(e) { return (e.gastos || []).reduce((a, g) => a + (+g.v || 0), 0); }
+const MONTHS = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+const MSHORT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+const VENUES = ['Center Convention', 'Espaço Villa Bella', 'Parque do Sabiá', 'Teatro Municipal', 'Hotel Plaza', 'Fazenda Serra Azul', 'Arena UDI', 'Casa Aurora'];
+const CLIENTS = ['Algar Telecom', 'Grupo Cargill', 'Prefeitura de Uberlândia', 'Sicredi', 'Martins Atacado', 'Família Andrade', 'Unimed', 'Rede Sul Farma', 'Instituto Mãos Unidas'];
+const TEAM = ['Ana Ribeiro', 'Carlos Mendes', 'Júlia Pacheco', 'Rafael Lima', 'Beatriz Souza'];
+const SUPPL = ['Buffet Sabor&Cia', 'Som&Luz Pro', 'Flores Bonita', 'Cenografia Nova', 'Transporte VIP', 'Segurança Prime'];
+const TASKS = ['Fechar contrato', 'Briefing com cliente', 'Reservar espaço', 'Contratar buffet', 'Aprovar layout', 'Enviar convites', 'Checklist técnico', 'Fechar pagamento'];
+const NAMES = {
+  Corporativo: ['Congresso Regional', 'Convenção de Vendas', 'Summit de Inovação', 'Encontro de Lideranças'],
+  Casamento: ['Casamento Andrade', 'Casamento Duarte', 'Bodas de Prata Nunes', 'Casamento Villela'],
+  Show: ['Festival Cerrado Vivo', 'Show Acústico Praça', 'Virada Cultural', 'Festival de Inverno'],
+  Feira: ['Feira do Agronegócio', 'Ativação Shopping', 'Expo Construção', 'Feira de Franquias'],
+  Interno: ['Kickoff Trimestral', 'Festa de Fim de Ano', 'Integração de Novos', 'Reunião Geral'],
+  Workshop: ['Workshop de Vendas', 'Treinamento de Liderança', 'Oficina de Marca', 'Imersão de Produto']
+};
+const TODAY = '2026-08-28';
+
+function iso(y, m, d) {
+  return y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+}
+function dim(y, m) { return new Date(y, m + 1, 0).getDate(); }
+function brl(n) {
+  if (n >= 1000000) return 'R$ ' + (n / 1000000).toFixed(1).replace('.', ',') + 'M';
+  if (n >= 1000) return 'R$ ' + Math.round(n / 1000) + 'k';
+  return 'R$ ' + n;
+}
+function pct(a, b) {
+  if (!b) return a ? '+100%' : '0%';
+  const v = Math.round(((a - b) / b) * 100);
+  return (v > 0 ? '+' : '') + v + '%';
+}
+function mk(seed) { let s = seed; return () => { s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; }; }
+
+function seedEvents() {
+  const r = mk(20260828);
+  const out = [];
+  let id = 1;
+  [2025, 2026].forEach(y => {
+    const per = [3, 4, 6, 5, 6, 5, 4, 6, 6, 7, 5, 4];
+    per.forEach((count, m) => {
+      const n = Math.max(2, count - (r() > 0.7 ? 1 : 0));
+      for (let i = 0; i < n; i++) {
+        const t = TYPES[Math.floor(r() * TYPES.length)];
+        const d = 1 + Math.floor(r() * dim(y, m));
+        const date = iso(y, m, d);
+        const past = date < TODAY;
+        const orc = Math.round((14 + r() * 180) * 1000);
+        const custo = Math.round(orc * (0.52 + r() * 0.42));
+        const st = past ? (r() > 0.93 ? 'Cancelado' : 'Concluído') : (r() > 0.45 ? 'Confirmado' : 'Planejado');
+        const nm = NAMES[t.k][Math.floor(r() * 4)];
+        const tasks = [];
+        const tn = 3 + Math.floor(r() * 3);
+        for (let j = 0; j < tn; j++) tasks.push({ t: TASKS[(j * 3 + Math.floor(r() * 8)) % TASKS.length], done: past ? true : r() > 0.55 });
+        out.push({
+          id: id++, nome: nm, tipo: t.k, data: date,
+          hora: [ '09:00', '10:30', '14:00', '19:00', '20:30' ][Math.floor(r() * 5)],
+          local: VENUES[Math.floor(r() * VENUES.length)],
+          cliente: CLIENTS[Math.floor(r() * CLIENTS.length)],
+          orcamento: orc, gastos: (() => {
+            const spend = past ? custo : Math.round(custo * 0.35);
+            const pick = CATS.slice().sort(() => r() - 0.5).slice(0, 3 + Math.floor(r() * 2));
+            let rem = spend; const out = [];
+            pick.forEach((c, i) => {
+              const v = i === pick.length - 1 ? Math.max(0, rem) : Math.max(0, Math.round(spend * (0.18 + r() * 0.2)));
+              rem -= v; out.push({ cat: c, v });
+            });
+            return out;
+          })(),
+          convidados: 40 + Math.floor(r() * 900), status: st,
+          equipe: TEAM[Math.floor(r() * TEAM.length)],
+          fornecedores: [SUPPL[Math.floor(r() * SUPPL.length)], SUPPL[Math.floor(r() * SUPPL.length)]].join(', '),
+          links: r() > 0.5 ? 'Contrato assinado.pdf' : '',
+          notas: '', checklist: tasks
+        });
+      }
+    });
+  });
+  return out;
+}
+
+class Component extends DCLogic {
+  state = {
+    events: seedEvents(),
+    blocked: ['2026-08-24', '2026-08-25', '2026-09-07'],
+    tab: 'agenda', mode: 'mes',
+    y: 2026, m: 7, sel: TODAY,
+    editing: null, period: 'mes',
+    cmpA: { y: 2026, m: 7 }, cmpB: { y: 2026, m: 6 }, cmpAY: 2026, cmpBY: 2025,
+    drag: null, dragPos: { x: 0, y: 0 },
+    trash: null, toast: ''
+  };
+
+  ty(k) { return TYPES.find(t => t.k === k) || TYPES[0]; }
+  weekStartSun() { return (this.props.semanaComeca ?? 'Domingo') === 'Domingo'; }
+  money() { return this.props.mostrarFinancas !== false; }
+
+  patch(id, key, val) {
+    this.setState(s => ({ events: s.events.map(e => e.id === id ? Object.assign({}, e, { [key]: val }) : e) }));
+  }
+  patchTasks(id, fn) {
+    this.setState(s => ({ events: s.events.map(e => e.id === id ? Object.assign({}, e, { checklist: fn(e.checklist) }) : e) }));
+  }
+  patchGastos(id, fn) {
+    this.setState(s => ({ events: s.events.map(e => e.id === id ? Object.assign({}, e, { gastos: fn(e.gastos || []) }) : e) }));
+  }
+  remove(id) {
+    const ev = this.state.events.find(e => e.id === id);
+    this.setState(s => ({ events: s.events.filter(e => e.id !== id), editing: null, trash: ev, toast: 'Evento excluído' }));
+    clearTimeout(this._tt);
+    this._tt = setTimeout(() => this.setState({ toast: '', trash: null }), 4200);
+  }
+  undo() {
+    clearTimeout(this._tt);
+    this.setState(s => (s.trash ? { events: s.events.concat([s.trash]), trash: null, toast: '' } : { toast: '' }));
+  }
+  add(dateIso) {
+    const id = Math.max(0, ...this.state.events.map(e => e.id)) + 1;
+    const ev = {
+      id, nome: '', tipo: 'Corporativo', data: dateIso, hora: '19:00', local: '', cliente: '',
+      orcamento: 0, gastos: [], convidados: 0, status: 'Planejado', equipe: '', fornecedores: '',
+      links: '', notas: '', checklist: [{ t: 'Briefing com cliente', done: false }]
+    };
+    const d = new Date(dateIso + 'T12:00:00');
+    this.setState(s => ({ events: s.events.concat([ev]), editing: id, sel: dateIso, y: d.getFullYear(), m: d.getMonth(), mode: s.mode === 'ano' ? 'mes' : s.mode, tab: 'agenda' }));
+  }
+  duplicate(id) {
+    const src = this.state.events.find(e => e.id === id);
+    if (!src) return;
+    const nid = Math.max(0, ...this.state.events.map(e => e.id)) + 1;
+    this.setState(s => ({ events: s.events.concat([Object.assign({}, src, { id: nid, nome: src.nome + ' (cópia)' })]), editing: nid }));
+  }
+  openEvent(ev) {
+    const d = new Date(ev.data + 'T12:00:00');
+    this.setState({ tab: 'agenda', mode: 'lista', editing: ev.id, sel: ev.data, y: d.getFullYear(), m: d.getMonth() });
+  }
+
+  startDrag(ev, e) {
+    const sx = e.clientX, sy = e.clientY;
+    let timer = setTimeout(() => {
+      this.setState({ drag: ev.id, dragPos: { x: sx, y: sy } });
+    }, 260);
+    const move = m => {
+      if (this.state.drag === ev.id) { this.setState({ dragPos: { x: m.clientX, y: m.clientY } }); m.preventDefault(); }
+      else if (Math.hypot(m.clientX - sx, m.clientY - sy) > 9) { clearTimeout(timer); done(); }
+    };
+    const up = u => {
+      clearTimeout(timer);
+      if (this.state.drag === ev.id) {
+        const el = document.elementFromPoint(u.clientX, u.clientY);
+        const cell = el && el.closest ? el.closest('[data-day]') : null;
+        const to = cell && cell.getAttribute('data-day');
+        if (to && to !== ev.data) this.patch(ev.id, 'data', to);
+        this.setState({ drag: null });
+      }
+      done();
+    };
+    const done = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move, { passive: false });
+    window.addEventListener('pointerup', up);
+  }
+
+  stats(list) {
+    const rec = list.reduce((a, e) => a + (e.status === 'Cancelado' ? 0 : +e.orcamento || 0), 0);
+    const cus = list.reduce((a, e) => a + cost(e), 0);
+    const con = list.reduce((a, e) => a + (+e.convidados || 0), 0);
+    return { n: list.length, rec, cus, mar: rec - cus, con, days: new Set(list.map(e => e.data)).size };
+  }
+  inMonth(y, m) { const p = iso(y, m, 1).slice(0, 7); return this.state.events.filter(e => e.data.slice(0, 7) === p); }
+  inYear(y) { return this.state.events.filter(e => +e.data.slice(0, 4) === y); }
+
+  vm(ev) {
+    const t = this.ty(ev.tipo);
+    const editing = this.state.editing === ev.id;
+    const d = new Date(ev.data + 'T12:00:00');
+    const pend = ev.checklist.filter(c => !c.done).length;
+    const stMap = {
+      Confirmado: ['var(--success-100)', 'var(--success-500)'],
+      Planejado: ['var(--accent-25)', 'var(--accent-700)'],
+      'Concluído': ['var(--gray-50)', 'var(--gray-600)'],
+      Cancelado: ['var(--danger-100)', 'var(--danger-500)']
+    };
+    const st = stMap[ev.status] || stMap['Planejado'];
+    const spent = cost(ev);
+    const orcv = +ev.orcamento || 0;
+    const ratio = orcv ? spent / orcv : 0;
+    return {
+      id: ev.id, nome: ev.nome || 'Sem título', tipo: ev.tipo, color: t.c,
+      data: ev.data, hora: ev.hora, local: ev.local, cliente: ev.cliente,
+      orcamento: ev.orcamento, convidados: ev.convidados,
+      status: ev.status, equipe: ev.equipe, fornecedores: ev.fornecedores,
+      links: ev.links, notas: ev.notas,
+      metaLine: d.getDate() + ' ' + MSHORT[d.getMonth()] + ' · ' + ev.hora + (ev.local ? ' · ' + ev.local : '') + (ev.cliente ? ' · ' + ev.cliente : ''),
+      orcLabel: brl(+ev.orcamento || 0),
+      statusBg: st[0], statusFg: st[1],
+      taskPending: pend > 0, taskLabel: pend + ' pendência' + (pend > 1 ? 's' : ''),
+      editing, reading: !editing, bd: editing ? 'var(--gray-300)' : 'var(--border-default)',
+      onEdit: () => this.setState({ editing: ev.id }),
+      onDone: () => this.setState({ editing: null }),
+      onDelete: e => { if (e && e.stopPropagation) e.stopPropagation(); this.remove(ev.id); },
+      onDuplicate: () => this.duplicate(ev.id),
+      onAddTask: () => this.patchTasks(ev.id, l => l.concat([{ t: '', done: false }])),
+      chNome: e => this.patch(ev.id, 'nome', e.target.value),
+      chTipo: e => this.patch(ev.id, 'tipo', e.target.value),
+      chStatus: e => this.patch(ev.id, 'status', e.target.value),
+      chData: e => e.target.value && this.patch(ev.id, 'data', e.target.value),
+      chHora: e => this.patch(ev.id, 'hora', e.target.value),
+      chLocal: e => this.patch(ev.id, 'local', e.target.value),
+      chCliente: e => this.patch(ev.id, 'cliente', e.target.value),
+      chConv: e => this.patch(ev.id, 'convidados', e.target.value),
+      chEquipe: e => this.patch(ev.id, 'equipe', e.target.value),
+      chOrc: e => this.patch(ev.id, 'orcamento', e.target.value),
+      custoLabel: brl(spent),
+      custoColor: orcv && spent > orcv ? 'var(--danger-500)' : (ratio > 0.85 ? 'var(--accent-600)' : 'var(--success-500)'),
+      gastoRatio: orcv ? Math.round(ratio * 100) + '% do orçamento' : 'sem orçamento',
+      gastoPct: Math.min(100, Math.round(ratio * 100)) + '%',
+      showBudget: this.money() && orcv > 0,
+      gastos: (ev.gastos || []).map((g, i) => ({
+        cat: g.cat, v: g.v,
+        onCat: e => this.patchGastos(ev.id, l => l.map((x, j) => j === i ? { cat: e.target.value, v: x.v } : x)),
+        onVal: e => this.patchGastos(ev.id, l => l.map((x, j) => j === i ? { cat: x.cat, v: e.target.value } : x)),
+        onRemove: () => this.patchGastos(ev.id, l => l.filter((x, j) => j !== i))
+      })),
+      gastoBars: (ev.gastos || []).filter(g => +g.v > 0).map(g => ({
+        c: CATC[g.cat] || 'var(--gray-300)',
+        w: Math.round(((+g.v || 0) / Math.max(1, spent)) * 100) + '%'
+      })),
+      onAddGasto: () => this.patchGastos(ev.id, l => l.concat([{ cat: 'Outros', v: 0 }])),
+      chForn: e => this.patch(ev.id, 'fornecedores', e.target.value),
+      chLinks: e => this.patch(ev.id, 'links', e.target.value),
+      chNotas: e => this.patch(ev.id, 'notas', e.target.value),
+      checklist: ev.checklist.map((c, i) => ({
+        t: c.t, bd: c.done ? t.c : 'var(--gray-300)', bg: c.done ? t.c : 'transparent',
+        tickOp: c.done ? 1 : 0, fg: c.done ? 'var(--gray-400)' : 'var(--text-primary)',
+        deco: c.done ? 'line-through' : 'none',
+        onToggle: () => this.patchTasks(ev.id, l => l.map((x, j) => j === i ? { t: x.t, done: !x.done } : x)),
+        onText: e => this.patchTasks(ev.id, l => l.map((x, j) => j === i ? { t: e.target.value, done: x.done } : x)),
+        onRemove: () => this.patchTasks(ev.id, l => l.filter((x, j) => j !== i))
+      }))
+    };
+  }
+
+  renderVals() {
+    const S = this.state;
+    const money = this.money();
+    const seg = (k, cur) => ({
+      bg: k === cur ? 'var(--gray-900)' : 'var(--gray-0)',
+      fg: k === cur ? 'var(--gray-25)' : 'var(--gray-600)',
+      bd: k === cur ? 'var(--gray-900)' : 'var(--border-default)'
+    });
+
+    const modes = [['mes', 'Mês'], ['semana', 'Semana'], ['ano', 'Ano'], ['lista', 'Lista']].map(([k, label]) =>
+      Object.assign({ label, onPick: () => this.setState({ mode: k }) }, seg(k, S.mode)));
+
+    // ---- month grid
+    const first = new Date(S.y, S.m, 1).getDay();
+    const offset = this.weekStartSun() ? first : (first + 6) % 7;
+    const total = dim(S.y, S.m);
+    const prevTotal = dim(S.m === 0 ? S.y - 1 : S.y, (S.m + 11) % 12);
+    const days = [];
+    for (let i = 0; i < 42; i++) {
+      const dnum = i - offset + 1;
+      const out = dnum < 1 || dnum > total;
+      let yy = S.y, mm = S.m, dd = dnum;
+      if (dnum < 1) { mm = S.m - 1; dd = prevTotal + dnum; if (mm < 0) { mm = 11; yy--; } }
+      else if (dnum > total) { mm = S.m + 1; dd = dnum - total; if (mm > 11) { mm = 0; yy++; } }
+      const key = iso(yy, mm, dd);
+      const evs = S.events.filter(e => e.data === key).sort((a, b) => a.hora.localeCompare(b.hora));
+      const blocked = S.blocked.indexOf(key) >= 0;
+      const isToday = key === TODAY;
+      const isSel = key === S.sel;
+      days.push({
+        iso: key, num: dd, op: out ? 0.32 : 1,
+        bg: isSel ? 'var(--gray-900)' : (blocked ? 'repeating-linear-gradient(135deg, var(--gray-50) 0 4px, var(--gray-100) 4px 8px)' : 'var(--gray-0)'),
+        bd: isSel ? 'var(--gray-900)' : (isToday ? 'var(--accent-500)' : 'var(--border-default)'),
+        numColor: isSel ? 'var(--gray-25)' : (isToday ? 'var(--accent-600)' : 'var(--gray-700)'),
+        chips: evs.slice(0, 2).map(e => ({
+          short: this.ty(e.tipo).short, color: this.ty(e.tipo).c,
+          op: S.drag === e.id ? 0.3 : 1,
+          onDown: ev2 => this.startDrag(e, ev2)
+        })),
+        more: evs.length > 2, moreLabel: '+' + (evs.length - 2),
+        onTap: () => (evs.length ? this.setState({ sel: key, mode: S.mode === 'ano' ? 'mes' : S.mode }) : this.add(key))
+      });
+    }
+
+    // ---- year grid
+    const months = MONTHS.map((label, i) => {
+      const list = this.inMonth(S.y, i);
+      const n = dim(S.y, i);
+      const withEv = new Set(list.map(e => e.data));
+      const cells = [];
+      const off = (this.weekStartSun() ? new Date(S.y, i, 1).getDay() : (new Date(S.y, i, 1).getDay() + 6) % 7);
+      for (let k = 0; k < off; k++) cells.push({ bg: 'transparent' });
+      for (let d = 1; d <= n; d++) {
+        const key = iso(S.y, i, d);
+        const hit = withEv.has(key);
+        cells.push({ bg: hit ? (S.events.filter(e => e.data === key).length > 1 ? 'var(--accent-600)' : 'var(--accent-300)') : 'var(--gray-50)' });
+      }
+      return {
+        label: label.slice(0, 3), count: list.length,
+        countColor: list.length ? 'var(--accent-600)' : 'var(--gray-300)',
+        bd: i === S.m ? 'var(--accent-500)' : 'var(--border-default)',
+        load: Math.round((withEv.size / n) * 100) + '%',
+        cells, onOpen: () => this.setState({ m: i, mode: 'mes' })
+      };
+    });
+
+    // ---- card list per mode
+    let cards = [], cardsTitle = '';
+    if (S.mode === 'mes') {
+      const d = new Date(S.sel + 'T12:00:00');
+      cards = S.events.filter(e => e.data === S.sel);
+      cardsTitle = d.getDate() + ' de ' + MONTHS[d.getMonth()] + ' — ' + cards.length + ' evento' + (cards.length === 1 ? '' : 's');
+    } else if (S.mode === 'semana') {
+      const base = new Date(S.sel + 'T12:00:00');
+      const shift = this.weekStartSun() ? base.getDay() : (base.getDay() + 6) % 7;
+      const start = new Date(base); start.setDate(base.getDate() - shift);
+      const keys = [];
+      for (let i = 0; i < 7; i++) { const d2 = new Date(start); d2.setDate(start.getDate() + i); keys.push(iso(d2.getFullYear(), d2.getMonth(), d2.getDate())); }
+      cards = S.events.filter(e => keys.indexOf(e.data) >= 0).sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
+      const a = new Date(keys[0] + 'T12:00:00'), b = new Date(keys[6] + 'T12:00:00');
+      cardsTitle = 'Semana de ' + a.getDate() + ' ' + MSHORT[a.getMonth()] + ' a ' + b.getDate() + ' ' + MSHORT[b.getMonth()];
+    } else if (S.mode === 'lista') {
+      cards = this.inMonth(S.y, S.m).slice().sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
+      cardsTitle = MONTHS[S.m] + ' ' + S.y + ' — ' + cards.length + ' eventos';
+    }
+    const cardVms = cards.map(e => this.vm(e));
+
+    // ---- dashboard
+    const isAno = S.period === 'ano';
+    const labA = isAno ? String(S.cmpAY) : MONTHS[S.cmpA.m] + ' ' + S.cmpA.y;
+    const labB = isAno ? String(S.cmpBY) : MONTHS[S.cmpB.m] + ' ' + S.cmpB.y;
+    const cur = isAno ? this.inYear(S.cmpAY) : this.inMonth(S.cmpA.y, S.cmpA.m);
+    const prev = isAno ? this.inYear(S.cmpBY) : this.inMonth(S.cmpB.y, S.cmpB.m);
+    const A = this.stats(cur), B = this.stats(prev);
+    const dpA = isAno ? (S.cmpAY % 4 === 0 ? 366 : 365) : dim(S.cmpA.y, S.cmpA.m);
+    const dpB = isAno ? (S.cmpBY % 4 === 0 ? 366 : 365) : dim(S.cmpB.y, S.cmpB.m);
+    const occ = Math.round((A.days / dpA) * 100);
+    const occPrev = Math.round((B.days / dpB) * 100);
+    const prevLabel = 'vs ' + (isAno ? labB : MONTHS[S.cmpB.m].slice(0, 3) + ' ' + String(S.cmpB.y).slice(2));
+    const monthOpts = [];
+    [2025, 2026, 2027].forEach(y => MONTHS.forEach((mn, i) => monthOpts.push({ v: y + '-' + i, l: mn.slice(0, 3) + ' ' + y })));
+    const yearOpts = [2024, 2025, 2026, 2027].map(y => ({ v: String(y), l: String(y) }));
+    const setCmp = (which, v) => {
+      if (isAno) this.setState({ [which === 'A' ? 'cmpAY' : 'cmpBY']: +v });
+      else { const p = v.split('-'); this.setState({ [which === 'A' ? 'cmpA' : 'cmpB']: { y: +p[0], m: +p[1] } }); }
+    };
+    const cmpPickers = [
+      { label: 'Período A', value: isAno ? String(S.cmpAY) : S.cmpA.y + '-' + S.cmpA.m, dot: 'var(--accent-500)', options: isAno ? yearOpts : monthOpts, onChange: e => setCmp('A', e.target.value) },
+      { label: 'Comparar com', value: isAno ? String(S.cmpBY) : S.cmpB.y + '-' + S.cmpB.m, dot: 'var(--gray-300)', options: isAno ? yearOpts : monthOpts, onChange: e => setCmp('B', e.target.value) }
+    ];
+    const catTotals = CATS.map(c => ({ k: c, c: CATC[c], n: cur.reduce((a, e) => a + (e.gastos || []).filter(g => g.cat === c).reduce((x, g) => x + (+g.v || 0), 0), 0) })).filter(r => r.n > 0).sort((a, b) => b.n - a.n);
+    const catMax = Math.max(1, ...catTotals.map(r => r.n));
+    const catSum = Math.max(1, catTotals.reduce((a, r) => a + r.n, 0));
+    const cats = catTotals.map(r => ({ k: r.k, c: r.c, w: Math.round((r.n / catMax) * 100) + '%', v: brl(r.n), share: Math.round((r.n / catSum) * 100) + '%' }));
+    const ticket = A.n ? brl(Math.round(A.cus / A.n)) : brl(0);
+    const perGuest = A.con ? brl(Math.round(A.cus / A.con)) : brl(0);
+
+    const kFin = [
+      { label: 'Receita', value: brl(A.rec), delta: pct(A.rec, B.rec), sub: prevLabel, dark: false, up: A.rec >= B.rec },
+      { label: 'Custo', value: brl(A.cus), delta: pct(A.cus, B.cus), sub: prevLabel, dark: false, up: A.cus <= B.cus },
+      { label: 'Margem', value: brl(A.mar), delta: pct(A.mar, B.mar), sub: prevLabel, dark: true, up: A.mar >= B.mar },
+      { label: 'Eventos', value: String(A.n), delta: pct(A.n, B.n), sub: prevLabel, dark: false, up: A.n >= B.n }
+    ];
+    const kOps = [
+      { label: 'Eventos', value: String(A.n), delta: pct(A.n, B.n), sub: prevLabel, dark: true, up: A.n >= B.n },
+      { label: 'Convidados', value: A.con >= 1000 ? (A.con / 1000).toFixed(1).replace('.', ',') + 'k' : String(A.con), delta: pct(A.con, B.con), sub: prevLabel, dark: false, up: A.con >= B.con },
+      { label: 'Ocupação', value: occ + '%', delta: pct(occ, occPrev), sub: prevLabel, dark: false, up: occ >= occPrev },
+      { label: 'Pendências', value: String(cur.reduce((a, e) => a + e.checklist.filter(c => !c.done).length, 0)), delta: '', sub: 'tarefas abertas', dark: false, up: true }
+    ];
+    const kpis = (money ? kFin : kOps).map(k => ({
+      label: k.label, value: k.value, delta: k.delta, sub: k.sub,
+      bg: k.dark ? 'var(--gray-900)' : 'var(--gray-0)',
+      bd: k.dark ? 'var(--gray-900)' : 'var(--border-default)',
+      fg: k.dark ? 'var(--gray-25)' : 'var(--text-primary)',
+      labelColor: k.dark ? 'var(--accent-300)' : 'var(--gray-400)',
+      subColor: k.dark ? 'var(--text-inverse-secondary)' : 'var(--gray-400)',
+      deltaColor: k.delta ? (k.dark ? (k.up ? 'var(--success-100)' : 'var(--accent-300)') : (k.up ? 'var(--success-500)' : 'var(--danger-500)')) : 'transparent'
+    }));
+
+    const metric = e => (money ? (+e.orcamento || 0) : 1);
+    const chYA = isAno ? S.cmpAY : S.cmpA.y;
+    const chYB = isAno ? S.cmpBY : (S.cmpB.y !== S.cmpA.y ? S.cmpB.y : S.cmpA.y - 1);
+    const seriesA = MONTHS.map((_, i) => this.inMonth(chYA, i).filter(e => e.status !== 'Cancelado').reduce((a, e) => a + metric(e), 0));
+    const seriesB = MONTHS.map((_, i) => this.inMonth(chYB, i).filter(e => e.status !== 'Cancelado').reduce((a, e) => a + metric(e), 0));
+    const max = Math.max(1, ...seriesA, ...seriesB);
+    const bars = MONTHS.map((_, i) => ({
+      label: MSHORT[i],
+      hA: Math.round((seriesA[i] / max) * 100) + '%',
+      hB: Math.round((seriesB[i] / max) * 100) + '%',
+      colorA: (!isAno && i === S.cmpA.m) ? 'var(--gray-900)' : 'var(--accent-500)',
+      labelColor: (!isAno && i === S.cmpA.m) ? 'var(--gray-900)' : 'var(--gray-400)',
+      onPick: () => this.setState(s => (s.period === 'ano' ? { m: i } : { cmpA: { y: chYA, m: i }, m: i }))
+    }));
+
+    const cmpDefs = money
+      ? [['Receita', A.rec, B.rec, brl(A.rec), brl(B.rec), true], ['Custo', A.cus, B.cus, brl(A.cus), brl(B.cus), false], ['Margem', A.mar, B.mar, brl(A.mar), brl(B.mar), true], ['Eventos', A.n, B.n, String(A.n), String(B.n), true]]
+      : [['Eventos', A.n, B.n, String(A.n), String(B.n), true], ['Convidados', A.con, B.con, String(A.con), String(B.con), true], ['Ocupação', occ, occPrev, occ + '%', occPrev + '%', true], ['Dias ativos', A.days, B.days, String(A.days), String(B.days), true]];
+    const cmpRows = cmpDefs.map(([label, a, b, la, lb, more]) => {
+      const mx = Math.max(1, a, b);
+      const up = more ? a >= b : a <= b;
+      return {
+        label, a: la, b: lb, delta: pct(a, b),
+        pctA: Math.round((a / mx) * 100) + '%', pctB: Math.round((b / mx) * 100) + '%',
+        deltaColor: up ? 'var(--success-500)' : 'var(--danger-500)'
+      };
+    });
+
+    const mixMax = Math.max(1, ...TYPES.map(t => cur.filter(e => e.tipo === t.k).length));
+    const mix = TYPES.map(t => {
+      const n = cur.filter(e => e.tipo === t.k).length;
+      return { k: t.k, c: t.c, n, w: Math.round((n / mixMax) * 100) + '%' };
+    }).sort((a, b) => b.n - a.n);
+
+    const alerts = S.events
+      .filter(e => e.data >= TODAY && (e.status === 'Planejado' || (+e.orcamento > 0 && cost(e) > +e.orcamento) || e.checklist.filter(c => !c.done).length >= 3))
+      .sort((a, b) => a.data.localeCompare(b.data))
+      .slice(0, 4)
+      .map(e => {
+        const d = new Date(e.data + 'T12:00:00');
+        const pend = e.checklist.filter(c => !c.done).length;
+        const overBudget = +e.orcamento > 0 && cost(e) > +e.orcamento;
+        return {
+          t: (e.nome || 'Sem título') + ' · ' + d.getDate() + ' ' + MSHORT[d.getMonth()],
+          sub: overBudget ? 'Custo acima do orçamento' : (e.status === 'Planejado' ? 'Ainda não confirmado · ' + pend + ' tarefas abertas' : pend + ' tarefas abertas'),
+          onOpen: () => this.openEvent(e)
+        };
+      });
+
+    const upcoming = S.events.filter(e => e.data >= TODAY && e.status !== 'Cancelado')
+      .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora)).slice(0, 4)
+      .map(e => {
+        const d = new Date(e.data + 'T12:00:00');
+        return {
+          d: d.getDate(), m: MSHORT[d.getMonth()], nome: e.nome || 'Sem título',
+          sub: e.hora + ' · ' + (e.local || 'local a definir'), color: this.ty(e.tipo).c,
+          onOpen: () => this.openEvent(e)
+        };
+      });
+
+    const wdSun = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+    const wdMon = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'];
+
+    return {
+      accent: this.props.accent ?? '#ff5a1f',
+      showMoney: money,
+      eyebrow: S.tab === 'dash' ? 'Painel' : 'Sua agenda',
+      headline: S.tab === 'dash'
+        ? (isAno ? 'Ano ' + S.cmpAY : labA)
+        : (S.mode === 'ano' ? String(S.y) : MONTHS[S.m] + ' ' + S.y),
+      tabAgenda: S.tab === 'agenda', tabDash: S.tab === 'dash',
+      showMonth: S.tab === 'agenda' && S.mode === 'mes',
+      showYear: S.tab === 'agenda' && S.mode === 'ano',
+      showCards: S.tab === 'agenda' && S.mode !== 'ano',
+      modes,
+      weekdays: (this.weekStartSun() ? wdSun : wdMon).map(l => ({ l })),
+      days, months,
+      legend: TYPES.map(t => ({ k: t.k, c: t.c })),
+      cards: cardVms, cardsTitle, cardsEmpty: cardVms.length === 0,
+      typeOptions: TYPES.map(t => ({ k: t.k })),
+      statusOptions: STATUS.map(k => ({ k })),
+      onPrev: () => this.setState(s => {
+        if (s.tab === 'dash') return s.period === 'ano' ? { cmpAY: s.cmpAY - 1 } : { cmpA: s.cmpA.m === 0 ? { y: s.cmpA.y - 1, m: 11 } : { y: s.cmpA.y, m: s.cmpA.m - 1 } };
+        if (s.mode === 'ano') return { y: s.y - 1 };
+        return s.m === 0 ? { y: s.y - 1, m: 11 } : { m: s.m - 1 };
+      }),
+      onNext: () => this.setState(s => {
+        if (s.tab === 'dash') return s.period === 'ano' ? { cmpAY: s.cmpAY + 1 } : { cmpA: s.cmpA.m === 11 ? { y: s.cmpA.y + 1, m: 0 } : { y: s.cmpA.y, m: s.cmpA.m + 1 } };
+        if (s.mode === 'ano') return { y: s.y + 1 };
+        return s.m === 11 ? { y: s.y + 1, m: 0 } : { m: s.m + 1 };
+      }),
+      onNew: () => this.add(S.sel.slice(0, 7) === iso(S.y, S.m, 1).slice(0, 7) ? S.sel : iso(S.y, S.m, 1)),
+      tabs: [
+        { label: 'Agenda', isCal: true, isDash: false, fg: S.tab === 'agenda' ? 'var(--gray-900)' : 'var(--gray-400)', onPick: () => this.setState({ tab: 'agenda' }) },
+        { label: 'Painel', isCal: false, isDash: true, fg: S.tab === 'dash' ? 'var(--gray-900)' : 'var(--gray-400)', onPick: () => this.setState({ tab: 'dash' }) }
+      ],
+      periods: [['mes', 'Mês'], ['ano', 'Ano']].map(([k, label]) =>
+        Object.assign({ label, onPick: () => this.setState({ period: k }) }, seg(k, S.period))),
+      kpis, bars, cmpRows, mix, alerts, upcoming,
+      chartTitle: money ? 'Receita por mês' : 'Eventos por mês',
+      serieA: String(chYA), serieB: String(chYB),
+      cmpTitle: labA + ' vs ' + labB,
+      cmpPickers, cats, catsEmpty: cats.length === 0, ticket, perGuest,
+      gastoCats: CATS.map(k => ({ k })),
+      dragging: !!S.drag,
+      ghost: (() => {
+        const e = S.events.find(x => x.id === S.drag);
+        return { x: S.dragPos.x + 'px', y: S.dragPos.y + 'px', label: e ? (e.nome || 'Sem título') : '', color: e ? this.ty(e.tipo).c : 'var(--gray-900)' };
+      })(),
+      toast: !!S.toast, toastText: S.toast, onUndo: () => this.undo()
+    };
+  }
+}
+
+</script>
+</body>
+</html>
