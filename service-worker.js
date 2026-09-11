@@ -1,4 +1,4 @@
-const CACHE = 'gestor-eventos-v3';
+const CACHE = 'gestor-eventos-v9';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -13,11 +13,13 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  if (url.origin !== self.location.origin) return;
+
   const isPage = e.request.mode === 'navigate' || e.request.destination === 'document';
   if (isPage) {
-    // rede primeiro: garante que uma nova publicação apareça na hora
     e.respondWith(
-      fetch(e.request).then(res => {
+      fetch(e.request, { cache: 'reload' }).then(res => {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put('./index.html', copy));
         return res;
