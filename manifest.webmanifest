@@ -2,11 +2,13 @@
   "name": "Gestor de Eventos",
   "short_name": "Eventos",
   "description": "Agenda, orçamento e painel financeiro para quem produz eventos.",
-  "start_url": "./index.html",
+  "start_url": "./app.html",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f7f6f3",
   "theme_color": "#0e0d0c",
+  "lang": "pt-BR",
   "icons": [
     {
       "src": "icon-192.png",
