@@ -1,5 +1,5 @@
-const CACHE = 'gestor-eventos-v14';
-const ASSETS = ['./', './index.html', './app.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+const CACHE = 'gestor-eventos-v14-2026-10b';
+const ASSETS = ['./', './index.html', './app.html', './manifest.webmanifest', './icone-192.png', './icone-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
