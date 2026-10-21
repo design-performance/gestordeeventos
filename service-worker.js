@@ -1,4 +1,4 @@
-const CACHE = 'gestor-eventos-v14-2026-10b';
+const CACHE = 'gestor-eventos-v14-2026-10c';
 const ASSETS = ['./', './index.html', './app.html', './manifest.webmanifest', './icone-192.png', './icone-512.png'];
 
 self.addEventListener('install', e => {
